@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Product.hasMany(models.TransactionHistory, {foreignKey: 'ProductId'})
+      Product.belongsTo(models.Category, {foreignKey: 'CategoryId'})
     }
   }
   Product.init({

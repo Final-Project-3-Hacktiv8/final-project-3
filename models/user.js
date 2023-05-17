@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         len: {
           args: [6, 10],
-          msg: 'Password must be between 6-10 characters'
-        } 
+          msg: 'Password must be between 6-10 characters',
+        },
       }
     },
     gender: {
