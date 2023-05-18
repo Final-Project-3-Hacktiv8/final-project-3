@@ -20,6 +20,33 @@ function userAuthorization (req, res, next) {
         })
 }
 
+//product authorization
+function productAuthorization (req, res, next) {
+    const id = req.params.id
+    Product.findOne({
+        where : {
+            id : id
+        }
+    })
+        .then(product => {
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                    devMessge: `Product with id ${id} not found`
+                })
+            }
+            return next()
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: 'Internal server error',
+                devMessage: err.message
+            })
+        })
+}
+
 module.exports = {
     userAuthorization,
+    productAuthorization
 }
+

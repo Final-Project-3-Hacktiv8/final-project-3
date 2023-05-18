@@ -128,7 +128,6 @@ class UserController {
     static async getAllUser(req, res, next) {
         try {
             const allUser = await User.findAll()
-            //rubah agar balance menjadi format Rp
             allUser.forEach(el => {
                 el.balance = `Rp. ${el.balance.toLocaleString()}`
             })
