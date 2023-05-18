@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: 'Type cannot be empty'
-        },
-        unique: {
-          args: true,
-          msg: 'Type already registered'
         }
       }
     },
@@ -43,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Category',
+    hooks: {
+      beforeCreate: (instance, options) => {
+        instance.sold_product_amount = 0
+      }
+    }
   });
   return Category;
 };

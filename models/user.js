@@ -2,7 +2,8 @@
 const {
   Model
 } = require('sequelize');
-const { hashPassword } = require('../helpers/bcrypt')
+const { hashPassword, comparePassword } = require('../helpers/bcrypt');
+const { use } = require('../routers/userRouters');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -48,10 +49,11 @@ module.exports = (sequelize, DataTypes) => {
           args: true,
           msg: 'Password cannot be empty'
         },
-        len: {
-          args: [6, 10],
-          msg: 'Password must be between 6-10 characters',
-        },
+        // len: {
+        //   args: [6, 10],
+        //   msg: 'Password must be between 6-10 characters',
+        // },
+        
       }
     },
     gender: {
@@ -115,9 +117,10 @@ module.exports = (sequelize, DataTypes) => {
         if(user.role === 'customer') {
           user.balance = 0
         }
-        user.password = hashPassword(user.password)
-      }
+        // user.password = hashPassword(user.password)
+      }, 
     }
+    
   });
   return User;
 };

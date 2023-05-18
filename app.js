@@ -5,12 +5,14 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 const userRouter = require('./routers/userRouters');
+const categoryRouter = require('./routers/categoryRouters');
 
 app.get('/', (req,res) => {
     res.send('Hello World!')
 })
 
 app.use('/users', userRouter);
+app.use('/categories', categoryRouter);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

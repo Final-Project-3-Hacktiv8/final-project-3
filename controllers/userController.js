@@ -3,6 +3,7 @@ const {User} = require('../models')
 const {comparePassword} = require('../helpers/bcrypt')
 const {generateToken} = require('../helpers/jwt')
 const {hashPassword} = require('../helpers/bcrypt')
+const { response } = require('express')
 
 class UserController {
     //create register user function with static async
@@ -91,7 +92,7 @@ class UserController {
             const editUser = await User.update({
                 full_name,
                 email,
-                password
+                password : hashedPassword
             }, {
                 where: {
                     id
@@ -109,7 +110,7 @@ class UserController {
     //delete user without params
     static async deleteUser(req, res, next) {
         try {
-            const id = req.userData.id;
+            const id = res.locals.user.id;
             const deleteUser = await User.destroy({
                 where: {
                     id
@@ -131,8 +132,27 @@ class UserController {
             allUser.forEach(el => {
                 el.balance = `Rp. ${el.balance.toLocaleString()}`
             })
-
             res.status(200).json(allUser)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error)
+            next(error)
+        }
+    }
+
+    //top up balance using patch
+    static async topUpBalance(req, res, next) {
+        try {
+            const id = res.locals.user.id
+            const {balance} = req.body
+            const topUp = await User.increment('balance', {
+                by: balance,
+                where: {
+                    id
+                }, returning: true
+            })
+            const user = await User.findByPk(id)
+            res.status(200).json({message: `Your Balance has been successfully updated to ${user.balance.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}`})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
