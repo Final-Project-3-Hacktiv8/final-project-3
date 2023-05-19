@@ -35,39 +35,5 @@ async function authentication(req, res, next) {
   }
 }
 
-//buat authentikasi untuk admin
-async function adminAuthentication(req, res, next) {
-  try {
-    // const token = req.headers.access_token
-    const token = req.get("token");
-    const Userdecoded = verifyToken(token);
-    User.findOne({
-      where: {
-        id: Userdecoded.id,
-        email: Userdecoded.email,
-        role: "admin",
-      },
-    })
-      .then((user) => {
-        if (!user) {
-          return res.status(401).json({
-            message: "User not authenticated",
-            devMessage: `User with id ${Userdecoded.id} not admin`,
-          });
-        }
-        res.locals.user = user;
-        return next();
-      })
-      .catch((err) => {
-        return res.status(500).json({
-          message: "Internal server error",
-          devMessage: err.message,
-        });
-      });
-  } catch (err) {
-    console.log(err);
-    return res.status(401).json(err);
-  }
-}
 
-module.exports = {authentication, adminAuthentication};
+module.exports = {authentication};
