@@ -85,20 +85,24 @@ class UserController {
             const {
                 full_name,
                 email,
-                password
 
             } = req.body
-            const hashedPassword = hashPassword(password)
             const editUser = await User.update({
                 full_name,
                 email,
-                password : hashedPassword
             }, {
                 where: {
                     id
                 }, returning: true
             })
-            res.status(200).json(editUser[1][0])
+            const response = {
+                id: editUser[1][0].id,
+                full_name: editUser[1][0].full_name,
+                email: editUser[1][0].email,
+                createdAt: editUser[1][0].createdAt,
+                updatedAt: editUser[1][0].updatedAt
+            }
+            res.status(200).json({User : response})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
