@@ -85,14 +85,11 @@ class UserController {
             const {
                 full_name,
                 email,
-                password
 
             } = req.body
-            const hashedPassword = hashPassword(password)
             const editUser = await User.update({
                 full_name,
                 email,
-                password : hashedPassword
             }, {
                 where: {
                     id
