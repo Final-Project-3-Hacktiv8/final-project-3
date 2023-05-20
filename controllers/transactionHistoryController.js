@@ -1,4 +1,3 @@
-
 const {User, Product, TransactionHistory, Category} = require('../models')
 
 class transactionHistoryController {
@@ -7,26 +6,22 @@ class transactionHistoryController {
         try {
             const UserId = res.locals.user.id
             const { ProductId, quantity } = req.body;
-            //pengecekan apakah product ada atau tidak
             const product = await Product.findByPk(ProductId)
             if (!product) {
                 throw { name: 'ProductNotFound' }
             }
-            //pengecekan apakah quantity lebih besar dari stock atau tidak
             if (quantity > product.stock) {
                 throw { name: 'QuantityExceeded' }
             }
-            //pengecekan apakah quantity lebih kecil dari 1 atau tidak
             if (quantity < 1) {
                 throw { name: 'QuantityLessThanOne' }
             }
-            //pengecekan balance user apakah cukup atau tidak
             const user = await User.findByPk(UserId)
             if (user.balance < product.price * quantity) {
                 throw { name: 'BalanceNotEnough' }
             }
-            const category = await Category.findByPk(ProductId)
-            //jika semua pengecekan sudah dilakukan, maka field stock product akan dikurangi sesuai dengan quantity yang dibeli dan balance user akan dikurangi sesuai dengan harga product dikali quantity, setelah itu sold_product_product akan ditambahkan sesuai dengan quantity yang dibeli
+            //cari category product
+            const category = await Category.findByPk(product.CategoryId)
             const stock = product.stock - quantity
             const balance = user.balance - product.price * quantity
             const transaction = await TransactionHistory.create({
@@ -35,39 +30,19 @@ class transactionHistoryController {
                 quantity,
                 total_price: product.price * quantity
             })
-            await Product.update({
-                stock,
-                // sold_product_amount: sold_product_amount
-            }, {
-                where: {
-                    id: ProductId
-                }
-            })
-            await User.update({
-                balance
-            }, {
-                where: {
-                    id: UserId
-                }
-            })
-            // tambahkan sold_product_amount sesuai dengan quantity yang dibeli
+            await Product.update({stock,},
+                 {where: {id: ProductId}})
+            await User.update({ balance },
+                 {where: {id: UserId}})
             const sold_product_amount = parseInt(category.sold_product_amount) + parseInt(quantity)
-            await Category.update({
-                sold_product_amount
-            }, {
-                where: {
-                    id: ProductId
-                }
-            })
-
+            await Category.update({ sold_product_amount },
+                { where: {id: category.id}})
 
            const response = {
-                //ubah agar total_price menjadi format Rp
                 total_price: `Rp ${transaction.total_price.toLocaleString()}`,
                 quantity: transaction.quantity,
                 product_name: product.title,
            }
-           
            res.status(201).json({
             message : 'You have successfully purchase the product',
             transactionBill : response
@@ -189,8 +164,6 @@ class transactionHistoryController {
             
         }
     }
-
-
 }
 
 module.exports = transactionHistoryController
