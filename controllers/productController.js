@@ -5,11 +5,12 @@ class productController {
     static async createProduct (req, res, next) {
         try {
             const {title, price, stock, CategoryId} = req.body
+            const category = await Category.findByPk(CategoryId);
+            if (!category) {
+                return res.status(400).json({ message:  `Category with id ${CategoryId} not found` });
+            }
             const newProduct = await Product.create({title, price, stock, CategoryId})
-            //buat agar Category menambah jika ada product baru
-            // const category = await Category.findByPk(CategoryId)
-            // const newSoldProductAmount = category.sold_product_amount + 1
-            // await Category.update({sold_product_amount: newSoldProductAmount}, {where: {id: CategoryId}})
+            
             const response = {
                 id: newProduct.id,
                 title: newProduct.title,
