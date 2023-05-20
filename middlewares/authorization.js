@@ -55,8 +55,9 @@ async function adminAuthorization(req, res, next) {
       return res.status(401).json(err);
     }
     
-    //product authorization
-function productAuthorization (req, res, next) {
+  }
+
+  function productAuthorization (req, res, next) {
     const id = req.params.id
     Product.findOne({
         where : {
@@ -80,8 +81,6 @@ function productAuthorization (req, res, next) {
         })
 
 }
-  }
-
 
 module.exports = {
     userAuthorization,
