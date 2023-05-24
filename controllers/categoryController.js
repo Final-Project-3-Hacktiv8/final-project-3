@@ -12,24 +12,22 @@ class categoryController {
                     sold_product_amount: category.sold_product_amount,
                     createdAt: category.createdAt,
                     updatedAt: category.updatedAt,
-                    Products: {
-                        id: category.Products.id,
-                        title: category.Products.title,
-                        //rubah jadi format Rp
-                        price: category.Products.price
-                                ? `Rp. ${category.Products.price.toLocaleString()}`
-                                : null,
-                        stock: category.Products.stock,
-                        CategoryId: category.Products.CategoryId,
-                        createdAt: category.Products.createdAt,
-                        updatedAt: category.Products.updatedAt
-                    }
+                    Products: category.Products.map(product => {
+                        return {
+                            id: product.id,
+                            title: product.title,
+                            price: product.price
+                                    ? `Rp. ${product.price.toLocaleString()}`
+                                    : null,
+                            stock: product.stock,
+                            CategoryId: product.CategoryId,
+                            createdAt: product.createdAt,
+                            updatedAt: product.updatedAt
+                        }
+                    })
                 }
-                res.status(200).json({
-                    Categories: mapCategories
-                })
             })
-            res.status(200).json(categories)
+            res.status(200).json({Categories : mapCategories})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
@@ -42,7 +40,7 @@ class categoryController {
         try {
             const {type} = req.body
             const newCategory = await Category.create({type})
-            res.status(201).json(newCategory)
+            res.status(201).json({Category : newCategory})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
@@ -65,7 +63,7 @@ class categoryController {
                 }
             })
             
-            res.status(200).json({Categories : mapEditCategory})
+            res.status(200).json({Category : mapEditCategory})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
