@@ -21,8 +21,44 @@ function userAuthorization (req, res, next) {
         })
 }
 
-//product authorization
-function productAuthorization (req, res, next) {
+
+//admin authorization
+async function adminAuthorization(req, res, next) {
+    try {
+      // const token = req.headers.access_token
+      const token = req.get("token");
+      const Userdecoded = verifyToken(token);
+      User.findOne({
+        where: {
+          id: Userdecoded.id,
+          email: Userdecoded.email,
+          role: "admin",
+        },
+      })
+        .then((user) => {
+          if (!user) {
+            return res.status(401).json({
+              message: "User not authenticated",
+              devMessage: `User with id ${Userdecoded.id} not admin`,
+            });
+          }
+          res.locals.user = user;
+          return next();
+        })
+        .catch((err) => {
+          return res.status(500).json({
+            message: "Internal server error",
+            devMessage: err.message,
+          });
+        });
+    } catch (err) {
+      console.log(err);
+      return res.status(401).json(err);
+    }
+    
+  }
+
+  function productAuthorization (req, res, next) {
     const id = req.params.id
     Product.findOne({
         where : {
@@ -36,6 +72,7 @@ function productAuthorization (req, res, next) {
                     devMessge: `Product with id ${id} not found`
                 })
             }
+
             //jika Category Product tidak ada saat dibuat
             if (!product.CategoryId) {
                 return res.status(400).json({
@@ -153,4 +190,3 @@ module.exports = {
     adminAuthorization,
     transactionAuthorization
 }
-

@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const categoryController = require('../controllers/categoryController')
 const {authentication} = require('../middlewares/authentication')
-const {adminAuthorization, categoryAuthorization} = require('../middlewares/authorization')
+const {adminAuthorization} = require('../middlewares/authorization')
 
 router.use(authentication)
 router.use(adminAuthorization)
