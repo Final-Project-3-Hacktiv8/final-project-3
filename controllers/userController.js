@@ -72,7 +72,6 @@ class UserController {
             res.status(200).json({access_token})
         } catch (error) {
             res.status(500).json(error)
-            console.log(error);
         }
     }
 
@@ -103,7 +102,6 @@ class UserController {
             }
             res.status(200).json({User : response})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
 
@@ -119,9 +117,8 @@ class UserController {
                     id
                 }
             })
-            res.status(200).json({message: 'delete success'})
+            res.status(200).json({message: 'Your Account has been successfully deleted'})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -136,7 +133,6 @@ class UserController {
             })
             res.status(200).json(allUser)
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -156,7 +152,6 @@ class UserController {
             const user = await User.findByPk(id)
             res.status(200).json({message: `Your Balance has been successfully updated to ${user.balance.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}`})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
