@@ -94,7 +94,14 @@ class UserController {
                     id
                 }, returning: true
             })
-            res.status(200).json(editUser[1][0])
+            const response = {
+                id: editUser[1][0].id,
+                full_name: editUser[1][0].full_name,
+                email: editUser[1][0].email,
+                createdAt: editUser[1][0].createdAt,
+                updatedAt: editUser[1][0].updatedAt
+            }
+            res.status(200).json({User : response})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)
@@ -124,7 +131,6 @@ class UserController {
     static async getAllUser(req, res, next) {
         try {
             const allUser = await User.findAll()
-            //rubah agar balance menjadi format Rp
             allUser.forEach(el => {
                 el.balance = `Rp. ${el.balance.toLocaleString()}`
             })

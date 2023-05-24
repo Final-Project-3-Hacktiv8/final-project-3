@@ -5,6 +5,7 @@ const {adminAuthorization} = require('../middlewares/authorization')
 
 router.use(authentication)
 router.use(adminAuthorization)
+router.use('/:id', categoryAuthorization)
 router.get('/', categoryController.getAllCategory)
 router.post('/', categoryController.createCategory)
 router.put('/:id', categoryController.editCategory)
