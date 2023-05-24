@@ -82,7 +82,7 @@ class productController {
                     updatedAt: product.updatedAt
                 }
             })
-            res.status(200).json({product : mapEditProduct})
+            res.status(200).json({Product : mapEditProduct[0]})
         } catch (error) {
             console.log(error);
             res.status(500).json(error)

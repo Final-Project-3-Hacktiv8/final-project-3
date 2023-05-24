@@ -167,11 +167,13 @@ async function adminAuthorization(req, res, next) {
                         devMessge: `Transaction with id ${id} not found`
                     })
                 }
-                if(transaction.UserId !== res.locals.user.id){ 
+                if(transaction.UserId !== res.locals.user.id && res.locals.user.role !== 'admin'){ 
                     return res.status(401).json({
                         message: 'User not authorized',
                         devMessge: `User with id ${res.locals.user.id} not authorized to id ${id}`
                     })
+                }else if(res.locals.user.role === 'admin'){
+                    return next()
                 }
                 return next()
             })

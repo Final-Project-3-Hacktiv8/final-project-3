@@ -79,12 +79,6 @@ class transactionHistoryController {
                         price : `Rp ${el.Product.price.toLocaleString()}`,
                         stock : el.Product.stock,
                         CategoryId : el.Product.CategoryId,
-                    },
-                    User : {
-                        id : el.User.id,
-                        email : el.User.email,
-                        balance : `Rp ${el.User.balance.toLocaleString()}`,
-                        role : el.User.role
                     }
                 }
             })
