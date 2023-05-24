@@ -24,7 +24,6 @@ class productController {
             }
             res.status(201).json({Product : response})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -57,7 +56,6 @@ class productController {
                 Products: mapProducts
             })
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -84,7 +82,6 @@ class productController {
             })
             res.status(200).json({Product : mapEditProduct[0]})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -97,7 +94,6 @@ class productController {
             const deleteProduct = await Product.destroy({where: {id}})
             res.status(200).json({message: 'Product has been successfully deleted'})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -123,7 +119,6 @@ class productController {
 
             res.status(200).json({product : response})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }

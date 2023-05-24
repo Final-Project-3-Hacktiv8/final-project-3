@@ -29,7 +29,6 @@ class categoryController {
             })
             res.status(200).json({Categories : mapCategories})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -42,7 +41,6 @@ class categoryController {
             const newCategory = await Category.create({type})
             res.status(201).json({Category : newCategory})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -65,7 +63,6 @@ class categoryController {
             
             res.status(200).json({Category : mapEditCategory})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }
@@ -78,7 +75,6 @@ class categoryController {
             const deleteCategory = await Category.destroy({where: {id}})
             res.status(200).json({message: 'category has been successfully deleted'})
         } catch (error) {
-            console.log(error);
             res.status(500).json(error)
             next(error)
         }

@@ -1,14 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 const userRouter = require('./routers/userRouters');
 const categoryRouter = require('./routers/categoryRouters');
 const productRouter = require('./routers/productRouters');
 const transactionRouter = require('./routers/transactionRouters');
+const env = process.env.NODE_ENV || 'development';
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req,res) => {
     res.send('Hello World!')

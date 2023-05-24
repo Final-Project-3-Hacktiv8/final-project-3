@@ -52,7 +52,6 @@ async function adminAuthorization(req, res, next) {
           });
         });
     } catch (err) {
-      console.log(err);
       return res.status(401).json(err);
     }
     
@@ -146,7 +145,7 @@ async function adminAuthorization(req, res, next) {
               });
             });
         } catch (err) {
-          console.log(err);
+  
           return res.status(401).json(err);
         }
       }
