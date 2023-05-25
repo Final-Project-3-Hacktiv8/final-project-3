@@ -131,7 +131,7 @@ class UserController {
             allUser.forEach(el => {
                 el.balance = `Rp. ${el.balance.toLocaleString()}`
             })
-            res.status(200).json(allUser)
+            res.status(200).json({User : allUser})
         } catch (error) {
             res.status(500).json(error)
             next(error)
