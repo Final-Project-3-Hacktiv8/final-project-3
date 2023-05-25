@@ -11,11 +11,12 @@ const productRouter = require('./routers/productRouters');
 const transactionRouter = require('./routers/transactionRouters');
 const env = process.env.NODE_ENV || 'development';
 
+app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req,res) => {
-    res.send('Hello World!')
+    res.sendFile(__dirname+'/index.html');
 })
 
 app.use('/users', userRouter);
