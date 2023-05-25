@@ -29,7 +29,7 @@ class UserController {
                 balance: newUser.balance.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})
                 
             }
-            res.status(201).json(response)
+            res.status(201).json({ User : response})
         }catch(err) {
             res.status(500).json(err)
             console.log(err);
